@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-import QuestionTimer from "./QuestionTimer";
+import Question from "./Question";
 
 // DUMMY RAW DATA (CONSTANT)
 import QUESTIONS from "../question";
@@ -29,8 +29,8 @@ function Quiz() {
         }
 
         setTimeout(() => {
-          setAnswerState('');
-        }, 2000)
+          setAnswerState("");
+        }, 2000);
       }, 1000);
     },
     [activeQuestionIndex]
@@ -50,42 +50,17 @@ function Quiz() {
     );
   }
 
-  const shuffledAnswers = [...QUESTIONS[activeQuestionIndex].answers];
-  // edit array on which you called it, so i do this because i dont want to change QUESTIONS array, because in there i know that first answer is correct
-  shuffledAnswers.sort(() => Math.random() - 0.5);
-
   return (
     <div id="quiz">
-      <div id="question">
-        <QuestionTimer
-          key={activeQuestionIndex}
-          timeout={10000}
-          onTimeout={handleSkipAnswer}
-        />
-        <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
-        <ul id="answers">
-          {shuffledAnswers.map((answer) => {
-            const isSelected = userAnswers[userAnswers.length - 1] === answer;
-            let cssClass = '';
-
-            if (answerState === 'answered' && isSelected) {
-              cssClass = 'selected'
-            }
-
-            if ((answerState === 'correct' || answerState === 'wrong') && isSelected) {
-              cssClass = answerState;
-            }
-
-            return (
-              <li key={answer} className="answer">
-                <button onClick={() => handleSelectAnswer(answer)} className={cssClass}>
-                  {answer}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <Question
+        key={activeQuestionIndex}
+        questionText={QUESTIONS[activeQuestionIndex].text}
+        answers={QUESTIONS[activeQuestionIndex].answers}
+        answerState={answerState}
+        selectedAnswer={userAnswers[userAnswers.length - 1]}
+        onSelectAnswer={handleSelectAnswer}
+        onSkipAnswer={handleSkipAnswer}
+      />
     </div>
   );
 }
