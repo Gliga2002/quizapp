@@ -1,10 +1,10 @@
 import { useState, useCallback } from "react";
 
 import Question from "./Question";
+import Summary from "./Summary";
 
 // DUMMY RAW DATA (CONSTANT)
 import QUESTIONS from "../question";
-import quizIsCompleteImg from "../assets/quiz-complete.png";
 
 function Quiz() {
   const [userAnswers, setUserAnswers] = useState([]);
@@ -27,12 +27,7 @@ function Quiz() {
   );
 
   if (quizIsComplete) {
-    return (
-      <div id="summary">
-        <img src={quizIsCompleteImg} alt="Thropy icon" />
-        <h2>Quiz is completed</h2>
-      </div>
-    );
+    return <Summary userAnswers={userAnswers} />;
   }
 
   return (
